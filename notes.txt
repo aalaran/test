@@ -1,0 +1,12 @@
+#Delete all registrations
+echo 'rg.dumpregistrations' | redis-cli -h redis-14092.re-cluster1.ps-redislabs.org -p 14092 | grep "000000" | grep -v sessionId | xargs -I '{}' echo 'rg.unregister {}' | redis-cli -h redis-14092.re-cluster1.ps-redislabs.org -p 14092 
+
+#flush db
+echo 'flushdb' | redis-cli -h redis-14092.re-cluster1.ps-redislabs.org -p 14092
+
+#Register function
+~/.local/bin/gears-cli run triggers.py --host redis-14092.re-cluster1.ps-redislabs.org --port 14092
+
+#Load data
+python3 client_load_data.py
+python3 client_count.py

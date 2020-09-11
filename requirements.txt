@@ -1,0 +1,2 @@
+gears-cli
+redis
